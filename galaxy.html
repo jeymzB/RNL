@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Galaxy Center Click Expand</title>
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+body{
+  overflow:hidden;
+  height:100vh;
+  background:#000;
+  font-family:Arial;
+  touch-action:none;
+}
+
+/* BACKGROUND */
+#fixedBg{
+  position:fixed;
+  inset:0;
+  z-index:0;
+}
+
+/* CANVAS */
+#trailCanvas,#shootingCanvas{
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+}
+
+/* WORLD */
+#world{
+  position:fixed;
+  inset:0;
+  z-index:3;
+}
+
+/* ⭐ CENTER (RESPONSIVE) */
+.center{
+  position:absolute;
+  top:50%;
+  left:50%;
+  width:min(320px,60vw);
+  height:min(320px,60vw);
+  transform:translate(-50%,-50%);
+  border-radius:50%;
+  background:radial-gradient(circle,#fff,#ff66ff,#ff1493,transparent);
+  filter:blur(18px);
+  box-shadow:0 0 40px #ff66ff, 0 0 120px #ff1493;
+}
+
+.text{
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  color:#fff;
+  font-size:clamp(18px,4vw,40px);
+  text-shadow:0 0 10px #ff66ff;
+  pointer-events:none;
+  text-align:center;
+}
+
+/* ⭐ IMAGE */
+.star{
+  position:absolute;
+  width:100px;
+  height:100px;
+  border-radius:50%;
+  object-fit:cover;
+  border:2px solid white;
+  box-shadow:0 0 10px rgba(255,255,255,0.2);
+  transform:translate(-50%,-50%);
+  transition:transform 0.5s ease, opacity 0.5s ease;
+  cursor:pointer;
+}
+
+/* FULLSCREEN */
+.star.fullscreen{
+  position:fixed !important;
+  top:0 !important;
+  left:0 !important;
+  width:100vw !important;
+  height:100vh !important;
+  object-fit:contain !important;
+  border-radius:0 !important;
+  transform:none !important;
+  z-index:999999 !important;
+  background:#000;
+  border:none !important;
+  box-shadow:none !important;
+}
+
+/* NAV */
+.navbar{
+  position:fixed;
+  bottom:20px;
+  left:50%;
+  transform:translateX(-50%);
+  display:flex;
+  gap:10px;
+  padding:10px 14px;
+  border-radius:20px;
+  background:rgba(0,0,0,0.35);
+  backdrop-filter:blur(10px);
+  z-index:99999;
+}
+
+.navbar button{
+  padding:8px 14px;
+  border:none;
+  border-radius:10px;
+  cursor:pointer;
+  color:white;
+  background:rgba(255,255,255,0.1);
+}
+</style>
+</head>
+
+<body>
+
+<div id="fixedBg"></div>
+<canvas id="trailCanvas"></canvas>
+<canvas id="shootingCanvas"></canvas>
+
+<div id="world">
+  <div class="center"></div>
+  <div class="text">I LOVE YOU ATE RNL 😜 ❤️</div>
+</div>
+
+<div class="navbar">
+  <button onclick="goPrev()">Prev</button>
+  <button onclick="goNext()">Next</button>
+  <button onclick="goClose()">Close</button>
+</div>
+
+<script>
+
+function goPrev(){ window.location.href="index.html"; }
+function goNext(){ window.location.href="ML.html"; }
+function goClose(){ window.location.href="index.html"; }
+
+const world=document.getElementById("world");
+const tc=document.getElementById("trailCanvas");
+const sc=document.getElementById("shootingCanvas");
+const tctx=tc.getContext("2d");
+const sctx=sc.getContext("2d");
+
+let scaleFactor = 1;
+
+function resize(){
+ tc.width=sc.width=innerWidth;
+ tc.height=sc.height=innerHeight;
+
+ // ⭐ IMPORTANT: mobile scaling fix
+ scaleFactor = Math.min(innerWidth/1920, innerHeight/1080);
+}
+resize();
+
+/* STAR BACKGROUND */
+const fixedBg=document.getElementById("fixedBg");
+const colors=["#fff","#ff66ff","#4dabff","#ffd166","#80ffdb"];
+
+for(let i=0;i<400;i++){
+ let s=document.createElement("div");
+ s.style.position="absolute";
+ s.style.borderRadius="50%";
+
+ let c=colors[Math.floor(Math.random()*colors.length)];
+ let size=Math.random()*2+1;
+
+ s.style.left=Math.random()*innerWidth+"px";
+ s.style.top=Math.random()*innerHeight+"px";
+ s.style.width=size+"px";
+ s.style.height=size+"px";
+ s.style.background=c;
+
+ fixedBg.appendChild(s);
+}
+
+/* SHOOTING STARS */
+let shots=[];
+setInterval(()=>{
+ shots.push({
+   x:Math.random()*innerWidth,
+   y:Math.random()*innerHeight/2,
+   len:120,
+   vx:-4,
+   vy:2,
+   a:1
+ });
+},1200);
+
+function drawShots(){
+ sctx.clearRect(0,0,sc.width,sc.height);
+
+ shots.forEach((s,i)=>{
+   sctx.beginPath();
+   sctx.moveTo(s.x,s.y);
+   sctx.lineTo(s.x+s.len,s.y+s.len);
+   sctx.strokeStyle=`rgba(255,255,255,${s.a})`;
+   sctx.shadowBlur=20;
+   sctx.shadowColor="#ff66ff";
+   sctx.stroke();
+
+   s.x+=s.vx;
+   s.y+=s.vy;
+   s.a-=0.01;
+
+   if(s.a<=0) shots.splice(i,1);
+ });
+}
+
+/* METEORS */
+const total=36;
+const meteors=[];
+let focused=null;
+
+for(let i=0;i<total;i++){
+
+ let img=document.createElement("img");
+ img.src=`${i+1}.jpg`;
+ img.className="star";
+ world.appendChild(img);
+
+ let item={
+   img,
+   x:innerWidth/2,
+   y:innerHeight/2,
+   vx:-(1+Math.random()*1.5),
+   vy:(0.5+Math.random()),
+   size:0.7+Math.random()*0.5,
+   trail:[]
+ };
+
+ img.onclick=()=>{
+
+   if(focused===item){
+     img.classList.remove("fullscreen");
+     focused=null;
+     return;
+   }
+
+   if(focused){
+     focused.img.classList.remove("fullscreen");
+   }
+
+   focused=item;
+   img.classList.add("fullscreen");
+ };
+
+ meteors.push(item);
+}
+
+/* ANIMATE */
+function animate(){
+
+ drawShots();
+ tctx.clearRect(0,0,tc.width,tc.height);
+
+ meteors.forEach(m=>{
+
+   if(focused!==m){
+     m.x+=m.vx*scaleFactor;
+     m.y+=m.vy*scaleFactor;
+   }
+
+   if(m.x<-200 || m.y>innerHeight+200){
+     m.x=innerWidth;
+     m.y=-100;
+     m.trail=[];
+   }
+
+   m.trail.push({x:m.x,y:m.y});
+   if(m.trail.length>80) m.trail.shift();
+
+   let cx=innerWidth/2;
+   let cy=innerHeight/2;
+
+   if(focused===m){
+     m.x += (cx - m.x)*0.08;
+     m.y += (cy - m.y)*0.08;
+
+     m.img.style.left=m.x+"px";
+     m.img.style.top=m.y+"px";
+     m.img.style.transform=`translate(-50%,-50%) scale(${4*scaleFactor})`;
+
+   }else{
+     m.img.style.left=m.x+"px";
+     m.img.style.top=m.y+"px";
+     m.img.style.transform=`translate(-50%,-50%) scale(${m.size*scaleFactor})`;
+   }
+
+ });
+
+ requestAnimationFrame(animate);
+}
+
+animate();
+addEventListener("resize",resize);
+
+</script>
+
+</body>
+</html>
