@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday 💖</title>
+
+<style>
+body{
+  margin:0;
+  font-family: Arial, sans-serif;
+  height:100vh;
+  overflow:hidden;
+}
+
+/* ===== 3 PANTAY BACKGROUNDS ===== */
+.wrapper{
+  display:flex;
+  height:100vh;
+  width:100%;
+}
+
+.panel{
+  flex:1;
+  background-repeat:no-repeat;
+  background-position:center;
+  background-size:cover;
+  filter: brightness(0.75) saturate(1.2);
+}
+
+.left{ background-image:url("love.jpg"); }
+.center{ background-image:url("my.jpg"); }
+.right{ background-image:url("Love.jpeg"); }
+
+/* ROMANTIC OVERLAY */
+.overlay{
+  position:fixed;
+  inset:0;
+  background: radial-gradient(circle at top, rgba(255,105,180,0.25), transparent 40%),
+              radial-gradient(circle at bottom, rgba(138,43,226,0.25), transparent 50%),
+              radial-gradient(circle at center, rgba(255,182,193,0.15), transparent 60%),
+              rgba(0,0,0,0.55);
+  z-index:1;
+}
+
+/* CENTER CONTAINER */
+.container{
+  position:fixed;
+  inset:0;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  padding:20px;
+  z-index:2;
+}
+
+/* MESSAGE */
+.message{
+  width:92%;
+  max-width:800px;
+  max-height:80vh;
+  overflow-y:auto;
+
+  color:#eee8eb;
+  font-size:18px;
+  line-height:1.9;
+
+  text-align:justify;
+
+  padding:20px;
+  border-radius:15px;
+
+  text-shadow:0 3px 15px rgba(0,0,0,0.9);
+
+  animation: fadeIn 2s ease-in-out;
+}
+
+@keyframes fadeIn{
+  from{opacity:0; transform:translateY(10px);}
+  to{opacity:1; transform:translateY(0);}
+}
+
+/* LOVE LINE */
+.love-line{
+  margin-top:25px;
+  font-size:22px;
+  font-weight:bold;
+  color:#ffb6c1;
+  text-align:center;
+  text-shadow:0 0 18px rgba(255,105,180,0.9);
+}
+
+/* FLOWERS */
+.flowers{
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  z-index:3;
+}
+
+.flower{
+  position:absolute;
+  font-size:22px;
+  animation: floatUp linear infinite;
+}
+
+@keyframes floatUp{
+  0%{transform:translateY(100vh); opacity:0;}
+  20%{opacity:1;}
+  100%{transform:translateY(-10vh); opacity:0;}
+}
+
+/* TOP BUTTONS */
+.top-buttons{
+  position:fixed;
+  top:15px;
+  left:15px;
+  right:15px;
+  display:flex;
+  justify-content:space-between;
+  z-index:10;
+}
+
+.top-buttons button{
+  padding:10px 16px;
+  border:none;
+  border-radius:12px;
+  cursor:pointer;
+  font-size:14px;
+  color:white;
+  background:rgba(255,105,180,0.5);
+  backdrop-filter:blur(8px);
+}
+
+/* ===== MOBILE FIX ===== */
+@media (max-width:768px){
+  .message{
+    width:95%;
+    max-height:75vh;
+    font-size:16px;
+    line-height:1.8;
+    padding:18px;
+    text-align:left;
+  }
+
+  .love-line{
+    font-size:18px;
+  }
+
+  .top-buttons button{
+    font-size:12px;
+    padding:8px 12px;
+  }
+}
+
+@media (max-width:400px){
+  .message{
+    font-size:15px;
+    line-height:1.7;
+    padding:15px;
+  }
+}
+</style>
+
+</head>
+<body>
+
+<div class="top-buttons">
+  <button onclick="goPrev()">⬅ Prev</button>
+  <button onclick="goClose()">✖ Close</button>
+</div>
+
+<div class="wrapper">
+  <div class="panel left"></div>
+  <div class="panel center"></div>
+  <div class="panel right"></div>
+</div>
+
+<div class="overlay"></div>
+
+<div class="flowers">
+  <div class="flower" style="left:10%; animation-duration:9s;">🌸</div>
+  <div class="flower" style="left:30%; animation-duration:7s;">🌷</div>
+  <div class="flower" style="left:50%; animation-duration:10s;">🌹</div>
+  <div class="flower" style="left:70%; animation-duration:8s;">🌸</div>
+  <div class="flower" style="left:90%; animation-duration:11s;">🌷</div>
+</div>
+
+<div class="container">
+  <div class="message">
+
+Happy Birthday love love kong apaka sungit 😜🥳🎂
+
+Ito po yung pinagkakabusyhan ko hindi po talaga ako magaling sa coding pero ginawa ko po ang best ko.
+
+Love wish ko po ngayong birthday mo ay sana maging okay na ang lahat dahil gustong gusto na po kitang makita, gusto kitang yakapin at halikan 😍😏😝
+
+Syempre gusto ko din po yung gusto mong gawin natin pag nagkita tayo.
+
+Mahal na mahal po kita ❤️
+
+Alam mo po sa imagination ko may mga anak na tayo, love wag ka pong magsasawa na intindihin ako ah, wag ka po magbabago at wag ka po mawawala ikaw lang po ang gusto kong makasama sa pagtanda.
+
+Mahal may mga araw po na hindi tayo mag kakaintindihan at may mga tampuhan pero kahit po ganon hinding hindi ako magsasawang magpakumbaba para magkaayos tayo.
+
+Handa akong palaging ibaba ang pride ko wag ka lang mawala.
+
+Kahit po ako yung nagtatampo ay hindi kita kayang tiisin.
+
+Walang araw na hindi kita iniisip pero wag mo naman po ako masyadong sungitan 😅
+
+Enjoyin mo po ang araw na ito.
+
+Happy Happy Birthday sayo mahal ko 😘🥳
+
+<div class="love-line">
+I LOVE YOU SO MUCH MY PSYCHOLOGIST 💗😘
+</div>
+
+  </div>
+</div>
+
+<script>
+function goPrev(){
+  window.location.href = "Woona.html";
+}
+
+function goClose(){
+  window.location.href = "index.html";
+}
+</script>
+
+</body>
+</html>
