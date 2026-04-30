@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Birthday → Gift → Message</title>
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+body{
+  overflow:hidden;
+  font-family:Arial;
+  width:100vw;
+  height:100vh;
+}
+
+/* ================= BIRTHDAY SCREEN ================= */
+#birthdayScreen{
+  position:fixed;
+  inset:0;
+
+  /* 🔥 BUONG PICTURE FIX */
+  background:url("RNL.jpg") no-repeat center center;
+  background-size:contain;
+
+  background-color:#e4aed4;
+
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-end;
+  align-items:center;
+
+  text-align:center;
+  z-index:10;
+
+  padding:20px;
+}
+
+/* optional soft overlay para maganda sa mobile */
+#birthdayScreen::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:rgba(228, 174, 212, 0.25);
+  z-index:-1;
+}
+
+.greetings{
+  color:black;
+  font-size:clamp(16px, 4vw, 22px);
+  font-weight:bold;
+  margin-bottom:25px;
+}
+
+.start-btn{
+  margin-bottom:40px;
+  padding:12px 20px;
+  font-size:16px;
+  background:#ff4b5c;
+  color:white;
+  border:none;
+  border-radius:12px;
+  cursor:pointer;
+  width:70%;
+  max-width:220px;
+}
+
+/* ================= GIFT SCREEN ================= */
+.gift-screen{
+  position:fixed;
+  inset:0;
+  display:none;
+  justify-content:center;
+  align-items:center;
+  background:rgb(232, 156, 214);
+  z-index:20;
+}
+
+.gift-box{
+  font-size:clamp(80px, 20vw, 120px);
+  animation:shake 0.6s infinite;
+}
+
+@keyframes shake{
+  0%{transform:rotate(0);}
+  50%{transform:rotate(10deg);}
+  100%{transform:rotate(-10deg);}
+}
+
+/* mobile tap fix */
+button{
+  -webkit-tap-highlight-color:transparent;
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- BIRTHDAY SCREEN -->
+<div id="birthdayScreen">
+  <div class="greetings">
+    🎉 Happy Birthday Love 🎂<br>
+    💗 I Love You My Psychologist 😘
+  </div>
+
+  <button class="start-btn" onclick="start()">🎁 Click Me</button>
+</div>
+
+<!-- GIFT SCREEN -->
+<div class="gift-screen" id="giftScreen">
+  <div class="gift-box">🎁</div>
+</div>
+
+<script>
+
+const birthdayScreen = document.getElementById("birthdayScreen");
+const giftScreen = document.getElementById("giftScreen");
+
+function start(){
+  giftScreen.style.display = "flex";
+  birthdayScreen.style.display = "none";
+
+  setTimeout(()=>{
+    window.location.href = "TYPO.html";
+  }, 1500);
+}
+
+</script>
+
+</body>
+</html>
